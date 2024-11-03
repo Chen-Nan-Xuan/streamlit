@@ -92,11 +92,18 @@ def stats_page():
         ]
 
         # 顯示報價日期的資訊作為表格
-        st.markdown("#### 報價日期資訊：")
         if not filtered_df.empty:
             filtered_df['含稅金額'] = filtered_df['含稅金額'].apply(lambda x: f"${x:,.0f}")
             # 隱藏項次欄位，只顯示必要的欄位
             st.dataframe(filtered_df[['廠商', '產品', '報價日期', '簽約年限', '未稅金額', '稅金', '含稅金額']])
+            
+            # 新增下載按鈕
+            st.download_button(
+                label="下載價格統計資料",
+                data=filtered_df.to_csv(index=False).encode('utf-8'),
+                file_name='price_statistics.csv',
+                mime='text/csv'
+            )
         else:
             st.warning("沒有找到相關報價資料。")
 
