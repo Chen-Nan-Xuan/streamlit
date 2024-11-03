@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # 設定頁面配置
-st.set_page_config(page_title="建築材料資料庫")
+st.set_page_config(page_title="軟體管理網頁")
 
 # 設定 CSS
 st.markdown("""
@@ -52,9 +52,9 @@ def main_page():
     st.markdown('***')
     st.markdown("##### 歡迎使用軟體管理網頁！請選擇左側目錄中的功能。")
     st.markdown('***')
-    st.markdown('#### 【聯絡資訊】')
-    st.info('大塚-卓靜萩 Jessica，Tel：02-8964-6668 # 2886')
-    st.info('采威-陳怡馨 Cindy，Tel：04-23265200 #376')
+    st.markdown('#### 【採購聯絡資訊】')
+    st.info('大塚-卓靜萩 Jessica，Tel：02-8964-6668 # 2886', '采威-陳怡馨 Cindy，Tel：04-23265200 #376')
+    st.info()
     # 版本和日期
     st.markdown("#### 【版本資訊】")
     st.info("版本: 1.0.0\n發佈日期: 2024-11-01")
@@ -107,4 +107,6 @@ page = st.sidebar.selectbox("選擇頁面", ["主頁", "軟體價格統計"])
 if page == "主頁":
     main_page()
 elif page == "軟體價格統計":
+    stats_page()
+elif page == "軟體採購紀錄":
     stats_page()
