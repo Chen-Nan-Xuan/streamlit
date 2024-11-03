@@ -51,11 +51,14 @@ def load_purchase_data():
 df = load_data()
 purchase_df = load_purchase_data()
 
+# 全局變數存儲查詢結果
+filtered_df_global = pd.DataFrame()
+
 # 主頁
 def main_page():
     st.title("🏛️ 軟體管理網頁")
     st.markdown('***')
-    st.write("歡迎使用軟體管理網頁！請選擇左側目錄中的功能。")
+    st.write("##### 歡迎使用軟體管理網頁！請選擇左側目錄中的功能。")
     st.markdown('***')
     st.markdown('#### 【採購聯絡資訊】')
     st.info('【大塚】卓靜萩 Jessica，Tel：02-8964-6668 # 2886')
@@ -69,6 +72,8 @@ def main_page():
 
 # 子頁：資料數量統計頁
 def stats_page():
+    global filtered_df_global  # 使用全局變數
+
     st.title("📊 軟體價格統計")
     st.markdown('***')
 
@@ -95,6 +100,9 @@ def stats_page():
             (filtered_vendor_df['簽約年限'] == selected_contract_year)
         ]
 
+        # 更新全局變數
+        filtered_df_global = filtered_df
+
         # 顯示報價日期的資訊作為表格
         st.write("以下是軟體價格統計資訊：")
         if not filtered_df.empty:
@@ -106,7 +114,7 @@ def stats_page():
             st.download_button(
                 label="下載價格統計資料",
                 data=filtered_df.to_csv(index=False).encode('utf-8'),
-                file_name='price_statistics.csv',
+                file_name='money_data.csv',
                 mime='text/csv'
             )
         else:
@@ -116,17 +124,19 @@ def stats_page():
 def purchase_record_page():
     st.title("📆 軟體採購紀錄")
     st.markdown('***')
-    st.write("以下是軟體採購紀錄：")
+    st.write("以下是軟體採購紀錄資料：")
 
     # 檢查是否有採購紀錄資料
     if purchase_df.empty:
-        st.warning("沒有找到相關採購紀錄。")
+        st.warning("沒有找到相關採購紀錄資料。")
     else:
-        st.dataframe(purchase_df, width=1200)
+        # 刪除空白欄位
+        purchase_df_cleaned = purchase_df.dropna(axis=1, how='all')
+        st.dataframe(purchase_df_cleaned, width=2400)
         # 新增下載按鈕
         st.download_button(
-            label="下載採購紀錄",
-            data=purchase_df.to_csv(index=False).encode('utf-8'),
+            label="下載採購紀錄資料",
+            data=purchase_df_cleaned.to_csv(index=False).encode('utf-8'),
             file_name='date_data.csv',
             mime='text/csv'
         )
@@ -140,4 +150,11 @@ if page == "主頁":
 elif page == "軟體價格統計":
     stats_page()
 elif page == "軟體採購紀錄":
-    purchase_record_page()
+    # 在這裡顯示相同的查詢結果
+    st.title("📊 軟體價格統計（查詢結果）")
+    if not filtered_df_global.empty:
+        st.write("以下是軟體價格統計查詢結果：")
+        filtered_df_global['含稅金額'] = filtered_df_global['含稅金額'].apply(lambda x: f"${x:,.0f}")
+        st.dataframe(filtered_df_global[['廠商', '產品', '報價日期', '簽約年限', '未稅金額', '稅金', '含稅金額']])
+    else:
+        st.warning("沒有查詢結果。")
