@@ -42,7 +42,7 @@ st.markdown("""
 # 載入資料
 @st.cache_data
 def load_data():
-    return pd.read_csv('money_data.csv')
+    return pd.read_csv('data_money.csv')
 
 df = load_data()
 
