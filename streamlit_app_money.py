@@ -44,20 +44,25 @@ st.markdown("""
 def load_data():
     return pd.read_csv('money_data.csv')
 
+@st.cache_data
+def load_purchase_data():
+    return pd.read_csv('date_data.csv')
+
 df = load_data()
+purchase_df = load_purchase_data()
 
 # 主頁
 def main_page():
     st.title("🏛️ 軟體管理網頁")
     st.markdown('***')
-    st.write("##### 歡迎使用軟體管理網頁！請選擇左側目錄中的功能。")
+    st.write("歡迎使用軟體管理網頁！請選擇左側目錄中的功能。")
     st.markdown('***')
     st.markdown('#### 【採購聯絡資訊】')
-    st.write('大塚-卓靜萩 Jessica，Tel：02-8964-6668 # 2886')
-    st.write('采威-陳怡馨 Cindy，Tel：04-23265200 #376')
+    st.info('【大塚】卓靜萩 Jessica，Tel：02-8964-6668 # 2886')
+    st.info('【采威】陳怡馨 Cindy，Tel：04-23265200 #376')
     # 版本和日期
-    st.markdown("#### 【版本資訊】")
-    st.write('版本: 1.0.0，發佈日期: 2024-11-01')
+    st.markdown("#### 【版本日期資訊】")
+    st.info("版本: 1.0.0。發佈日期: 2024/11/04")
     # 公司版權與製作者
     st.markdown('***')
     st.write('Page Designed by Nan-Xuan. ©')
@@ -66,7 +71,6 @@ def main_page():
 def stats_page():
     st.title("📊 軟體價格統計")
     st.markdown('***')
-    st.write("以下是軟體價格統計資訊：")
 
     # 提取廠商和產品列表
     vendors = df['廠商'].unique()
@@ -92,38 +96,48 @@ def stats_page():
         ]
 
         # 顯示報價日期的資訊作為表格
-        st.markdown("#### 報價日期資訊：")
+        st.write("以下是軟體價格統計資訊：")
         if not filtered_df.empty:
             filtered_df['含稅金額'] = filtered_df['含稅金額'].apply(lambda x: f"${x:,.0f}")
             # 隱藏項次欄位，只顯示必要的欄位
             st.dataframe(filtered_df[['廠商', '產品', '報價日期', '簽約年限', '未稅金額', '稅金', '含稅金額']])
+
+            # 新增下載按鈕
+            st.download_button(
+                label="下載價格統計資料",
+                data=filtered_df.to_csv(index=False).encode('utf-8'),
+                file_name='price_statistics.csv',
+                mime='text/csv'
+            )
         else:
             st.warning("沒有找到相關報價資料。")
 
 # 子頁：軟體採購紀錄
-def stats_page():
+def purchase_record_page():
     st.title("📆 軟體採購紀錄")
     st.markdown('***')
     st.write("以下是軟體採購紀錄：")
-    st.markdown('***')
-    st.markdown('#### 【採購日期資訊】')
 
-    # 顯示報價日期的資訊作為表格
-    st.markdown("#### 採購日期資訊：")
-    if not filtered_df.empty:
-        filtered_df['含稅金額'] = filtered_df['含稅金額'].apply(lambda x: f"${x:,.0f}")
-        # 隱藏項次欄位，只顯示必要的欄位
-        st.dataframe(filtered_df[['廠商', '產品', '報價日期', '簽約年限', '未稅金額', '稅金', '含稅金額']])
+    # 檢查是否有採購紀錄資料
+    if purchase_df.empty:
+        st.warning("沒有找到相關採購紀錄。")
     else:
-        st.warning("沒有找到相關採購資料。")
+        st.dataframe(purchase_df, width=1200)
+        # 新增下載按鈕
+        st.download_button(
+            label="下載採購紀錄",
+            data=purchase_df.to_csv(index=False).encode('utf-8'),
+            file_name='date_data.csv',
+            mime='text/csv'
+        )
 
 # 主程式與多頁面應用
 st.sidebar.title("軟體管理目錄")
-page = st.sidebar.selectbox("選擇頁面", ["主頁", "軟體價格統計"])
+page = st.sidebar.selectbox("選擇頁面", ["主頁", "軟體價格統計", "軟體採購紀錄"])
 
 if page == "主頁":
     main_page()
 elif page == "軟體價格統計":
     stats_page()
 elif page == "軟體採購紀錄":
-    stats_page()
+    purchase_record_page()
