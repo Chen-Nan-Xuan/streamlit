@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+# import matplotlib.pyplot as plt 
+import altair as alt
 
 # 設定頁面配置
 st.set_page_config(page_title="軟理管理網站")
@@ -64,7 +66,7 @@ def main_page():
 
 # 子頁：資料數量統計頁
 def stats_page():
-    st.title("📈 軟體價格統計")
+    st.title("📊 軟體價格統計")
     st.markdown('***')
     st.write("以下是軟體價格統計資訊：")
 
@@ -96,15 +98,79 @@ def stats_page():
             filtered_df['含稅金額'] = filtered_df['含稅金額'].apply(lambda x: f"${x:,.0f}")
             # 隱藏項次欄位，只顯示必要的欄位
             st.dataframe(filtered_df[['廠商', '產品', '報價日期', '簽約年限', '未稅金額', '稅金', '含稅金額']])
-            
         else:
             st.warning("沒有找到相關報價資料。")
 
+# 漲幅數據
+data = {
+    "項目": [
+        "Autodesk3年期折扣從10%調整成5%",
+        "Autodesk因美金匯率調漲",
+        "Autodesk因美金匯率調漲",
+        "Autodesk因美金匯率調漲",
+        "Autodesk3年期折扣不再提供5%優惠",
+        "Autodesk調整整體商品報價",
+        "Autodesk調整整體商品報價",
+        "Autodesk大多數1年期的商品上漲",
+        "Autodesk1年期&3年期的商品上漲",
+        "Autodesk部分1年期的商品無5%&10%優惠"
+    ],
+    "漲幅（%）": [
+        5,
+        3.6,
+        6,
+        6,
+        5,
+        6,
+        3,
+        5,
+        5,
+        5  # 最後一項是範圍
+    ],
+    "日期": [
+        "20220107",
+        "20220401",
+        "20220606",
+        "20221001",
+        "20230107",
+        "20230201",
+        "20231001",
+        "20240207",
+        "20240507",
+        "20250107"
+    ]
+}
+
+df_price_increase = pd.DataFrame(data)
+df_price_increase['日期'] = pd.to_datetime(df_price_increase['日期'], format='%Y%m%d')
+
+# 子頁：軟體價格漲幅
+def price_increase_page():
+    st.title("📉 軟體價格漲幅")
+    st.markdown('***')
+
+    # 使用 Altair 繪製折線圖
+    line_chart = alt.Chart(df_price_increase).mark_line(point=True).encode(
+        x='日期:T',
+        y='漲幅（%）:Q',
+        tooltip=['項目', '漲幅（%）', '日期']
+    ).properties(
+        title='Autodesk 軟體價格漲幅（%）',
+        width=700,
+        height=400
+    )
+
+    st.altair_chart(line_chart, use_container_width=True)
+    st.markdown('***')
+    st.dataframe(df_price_increase)
+
 # 主程式與多頁面應用
 st.sidebar.title("軟體管理目錄")
-page = st.sidebar.selectbox("選擇頁面", ["主頁", "軟體價格統計"])
+page = st.sidebar.selectbox("選擇頁面", ["主頁", "軟體價格統計", "軟體價格漲幅"])
 
 if page == "主頁":
     main_page()
 elif page == "軟體價格統計":
     stats_page()
+elif page == "軟體價格漲幅":
+    price_increase_page()
