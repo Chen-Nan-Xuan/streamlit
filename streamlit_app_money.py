@@ -103,7 +103,7 @@ def stats_page():
 
 # 漲幅數據
 data = {
-    "項目": [
+    "漲幅項目": [
         "Autodesk3年期折扣從10%調整成5%",
         "Autodesk因美金匯率調漲",
         "Autodesk因美金匯率調漲",
@@ -115,7 +115,7 @@ data = {
         "Autodesk1年期&3年期的商品上漲",
         "Autodesk部分1年期的商品無10%優惠"
     ],
-        "漲幅%": [
+    "漲幅%": [
         5,
         3.6,
         6,
@@ -139,7 +139,7 @@ data = {
         44.6,
         54.6  # 最後一項是範圍
     ],
-    "日期": [
+    "漲幅日期": [
         "20220107",
         "20220401",
         "20220606",
@@ -164,13 +164,13 @@ def price_increase_page():
 
     # 使用 Altair 繪製折線圖
     line_chart = alt.Chart(df_price_increase).mark_line(point=True).encode(
-        x='日期:T',
+        x='漲幅日期:T',
         y='累積漲幅%:Q',
-        tooltip=['項目', '累積漲幅%', '日期']
+        tooltip=['漲幅項目', '累積漲幅%', '漲幅日期']
     ).properties(
         title='Autodesk 軟體價格漲幅，以1年期的商品來看，從2022年至2025年整體約漲了44.6%；以3年期的商品來看，從2022年至2025年整體約漲了54.6%！',
-        width=700,
-        height=400
+        width=1200,
+        height=800
     )
 
     st.altair_chart(line_chart, use_container_width=True)
