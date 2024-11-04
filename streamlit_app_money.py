@@ -154,7 +154,7 @@ data = {
 }
 
 df_price_increase = pd.DataFrame(data)
-df_price_increase['日期'] = pd.to_datetime(df_price_increase['日期'], format='%Y%m%d')
+df_price_increase['漲幅日期'] = pd.to_datetime(df_price_increase['漲幅日期'], format='%Y%m%d')
 
 # 子頁：軟體價格漲幅
 def price_increase_page():
