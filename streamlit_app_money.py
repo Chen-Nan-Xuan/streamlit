@@ -148,6 +148,7 @@ df_price_increase['日期'] = pd.to_datetime(df_price_increase['日期'], format
 def price_increase_page():
     st.title("📉 軟體價格漲幅")
     st.markdown('***')
+    st.write("以下是軟體價格漲幅資訊：")
 
     # 使用 Altair 繪製折線圖
     line_chart = alt.Chart(df_price_increase).mark_line(point=True).encode(
@@ -155,7 +156,7 @@ def price_increase_page():
         y='漲幅（%）:Q',
         tooltip=['項目', '漲幅（%）', '日期']
     ).properties(
-        title='Autodesk 軟體價格漲幅（%）',
+        title='Autodesk 軟體價格漲幅（%），從2022年至2025年全軟體約漲了45%',
         width=700,
         height=400
     )
