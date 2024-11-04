@@ -156,7 +156,7 @@ def price_increase_page():
         y='漲幅（%）:Q',
         tooltip=['項目', '漲幅（%）', '日期']
     ).properties(
-        title='Autodesk 軟體價格漲幅（%），從2022年至2025年全軟體約漲了45%',
+        title='Autodesk 軟體價格漲幅（%），從2022年至2025年Autodesk 約漲了45%！',
         width=700,
         height=400
     )
