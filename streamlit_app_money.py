@@ -40,11 +40,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # 載入資料
-@st.cache_data
-def load_data():
-    return pd.read_csv('data_money.csv')
-
-df = load_data()
+data = pd.read_csv('data_money.csv')
 
 # 主頁
 def main_page():
@@ -108,3 +104,4 @@ if page == "主頁":
     main_page()
 elif page == "軟體價格統計":
     stats_page()
+
