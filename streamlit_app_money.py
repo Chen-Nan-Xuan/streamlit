@@ -169,8 +169,8 @@ def price_increase_page():
         tooltip=['漲幅項目', '累積漲幅%', '漲幅日期']
     ).properties(
         title='Autodesk 軟體價格漲幅，以1年期的商品來看，從2022年至2025年整體約漲了44.6%；以3年期的商品來看，從2022年至2025年整體約漲了54.6%！',
-        width=1200,
-        height=800
+        width=800,
+        height=400
     )
 
     st.altair_chart(line_chart, use_container_width=True)
