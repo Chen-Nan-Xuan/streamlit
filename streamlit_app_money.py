@@ -158,7 +158,7 @@ df_price_increase['漲幅日期'] = pd.to_datetime(df_price_increase['漲幅日�
 
 # 子頁：軟體價格漲幅
 def price_increase_page():
-    st.title("📉 軟體價格漲幅")
+    st.title("📈 軟體價格漲幅")
     st.markdown('***')
     st.write("以下是軟體價格漲幅資訊：")
 
@@ -169,8 +169,8 @@ def price_increase_page():
         tooltip=['漲幅項目', '累積漲幅%', '漲幅日期']
     ).properties(
         title='Autodesk 軟體價格漲幅，以1年期的商品來看，從2022年至2025年整體約漲了44.6%；以3年期的商品來看，從2022年至2025年整體約漲了54.6%！',
-        width=700,
-        height=500
+        width=600,
+        height=400
     )
 
     st.altair_chart(line_chart, use_container_width=True)
