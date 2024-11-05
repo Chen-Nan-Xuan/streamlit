@@ -4,7 +4,7 @@ import pandas as pd
 import altair as alt
 
 # 設定頁面配置
-st.set_page_config(page_title="軟理管理網站")
+st.set_page_config(page_title="軟理管理網頁")
 
 # 設定 CSS
 st.markdown("""
