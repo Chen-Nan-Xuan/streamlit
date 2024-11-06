@@ -55,8 +55,8 @@ def main_page():
     st.write('歡迎使用軟體管理網頁！請選擇左側目錄中的功能。')
     st.markdown('***')
     st.markdown('#### 【聯絡資訊】')
-    st.info('大塚-卓靜萩 Jessica，Tel：02-8964-6668 # 2886')
-    st.info('采威-陳怡馨 Cindy，Tel：04-23265200 #376')
+    st.info('大塚資訊科技股份有限公司 卓靜萩 Jessica，Tel：02-8964-6668 # 2886')
+    st.info('采威國際資訊股份有限公司 陳怡馨 Cindy，Tel：04-23265200 #376')
     # 版本和日期
     st.markdown("#### 【版本資訊】")
     st.info("版本: 1.0.0\n發佈日期: 2024-11-01")
